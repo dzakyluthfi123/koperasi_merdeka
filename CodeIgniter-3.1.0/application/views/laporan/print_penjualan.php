@@ -59,6 +59,11 @@
             border-radius: 5px;
             margin-bottom: 20px;
         }
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
         @media print {
             .no-print { 
                 display: none; 
@@ -75,23 +80,16 @@
 <body>
     <div class="header">
         <h2>KOPERASI MERDEKA</h2>
-        <p>Laporan Penjualan Bulan <?= date('F Y', mktime(0, 0, 0, $bulan, 1, $tahun)) ?></p>
+        <p>Laporan Penjualan Bulan <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
         <p>Tanggal Cetak: <?= date('d/m/Y H:i:s') ?></p>
     </div>
     
-    <?php
-    $bulan_list = [
-        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
-        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
-        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
-    ];
-    ?>
-    
-    <?php if ($penjualan): ?>
+    <?php if (!empty($penjualan)): ?>
     <div class="summary">
-        <p><strong>Periode:</strong> <?= $bulan_list[$bulan] ?> <?= $tahun ?></p>
-        <p><strong>Total Pendapatan:</strong> Rp <?= number_format($total ? $total->total_penjualan : 0, 0, ',', '.') ?></p>
-        <p><strong>Total Barang Terjual:</strong> <?= $total ? $total->total_barang_terjual : 0 ?> item</p>
+        <p><strong>Periode:</strong> <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Bulan ' . $bulan ?> <?= $tahun ?></p>
+        <p><strong>Total Pendapatan:</strong> Rp <?= number_format(isset($total->total_penjualan) ? $total->total_penjualan : 0, 0, ',', '.') ?></p>
+        <p><strong>Total Barang Terjual:</strong> <?= isset($total->total_barang_terjual) ? $total->total_barang_terjual : 0 ?> item</p>
+        <p><strong>Jenis Barang Terjual:</strong> <?= isset($total->jumlah_jenis_barang) ? $total->jumlah_jenis_barang : 0 ?> jenis</p>
     </div>
     
     <table>
@@ -102,7 +100,7 @@
                 <th>Nama Barang</th>
                 <th>Jenis</th>
                 <th>Jumlah Terjual</th>
-                <th>Harga Jual</th>
+                <th>Harga Rata-rata</th>
                 <th>Total</th>
             </tr>
         </thead>
@@ -133,8 +131,9 @@
     </table>
     
     <?php else: ?>
-    <div style="text-align: center; padding: 40px;">
-        <p><strong>Tidak ada data penjualan untuk periode yang dipilih.</strong></p>
+    <div class="no-data">
+        <h3>Tidak ada data penjualan</h3>
+        <p>Tidak ada data penjualan untuk periode <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Bulan ' . $bulan ?> <?= $tahun ?></p>
     </div>
     <?php endif; ?>
     
@@ -159,12 +158,5 @@
         <button onclick="window.print()" class="btn btn-primary">Print Laporan</button>
         <button onclick="window.history.back()" class="btn btn-secondary">Kembali</button>
     </div>
-    
-    <script>
-        window.onload = function() {
-            // Auto print jika diinginkan
-            // window.print();
-        }
-    </script>
 </body>
 </html>
