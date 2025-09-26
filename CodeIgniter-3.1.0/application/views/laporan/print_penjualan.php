@@ -148,7 +148,7 @@
                 <td width="50%" class="text-center">
                     <p>Yang Membuat,</p>
                     <br><br><br>
-                    <p><strong>Administrator</strong></p>
+                    <p><strong>Karyoto</strong></p>
                 </td>
             </tr>
         </table>
