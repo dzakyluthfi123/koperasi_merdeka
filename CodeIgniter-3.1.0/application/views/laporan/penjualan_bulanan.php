@@ -1,18 +1,3 @@
-<?php
-// Tambahkan di paling atas untuk handling error
-if (!isset($bulan)) $bulan = date('n'); // n = bulan tanpa leading zero
-if (!isset($tahun)) $tahun = date('Y');
-if (!isset($penjualan)) $penjualan = [];
-if (!isset($total)) $total = null;
-
-// Definisikan bulan_list dengan format yang konsisten
-$bulan_list = [
-    1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
-    5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
-    9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
-];
-?>
-
 <div class="d-flex justify-content-between mb-3">
     <h3>Laporan Penjualan Bulanan</h3>
 </div>
@@ -29,7 +14,14 @@ $bulan_list = [
                         <label class="form-label">Bulan</label>
                         <select class="form-control" name="bulan" required>
                             <option value="">Pilih Bulan</option>
-                            <?php foreach($bulan_list as $key => $value): ?>
+                            <?php
+                            $bulan_list = [
+                                1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                                5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                                9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+                            ];
+                            foreach($bulan_list as $key => $value): 
+                            ?>
                             <option value="<?= $key ?>" <?= $key == $bulan ? 'selected' : '' ?>>
                                 <?= $value ?>
                             </option>
@@ -57,11 +49,9 @@ $bulan_list = [
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-filter"></i> Filter
                             </button>
-                            <?php if ($penjualan && !empty($penjualan) && isset($bulan_list[$bulan])): ?>
                             <a href="<?= base_url('laporan/print/'.$bulan.'/'.$tahun) ?>" class="btn btn-success" target="_blank">
                                 <i class="fas fa-print"></i> Print
                             </a>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -70,10 +60,10 @@ $bulan_list = [
     </div>
 </div>
 
-<?php if ($penjualan && !empty($penjualan)): ?>
+<?php if ($penjualan): ?>
 <div class="card mt-4">
     <div class="card-header">
-        <h5>Data Penjualan Bulan <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Bulan ' . $bulan ?> <?= $tahun ?></h5>
+        <h5>Data Penjualan Bulan <?= $bulan_list[$bulan] ?> <?= $tahun ?></h5>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -92,15 +82,15 @@ $bulan_list = [
                     <?php 
                     $grand_total = 0;
                     foreach($penjualan as $p): 
-                        $grand_total += isset($p->total_pendapatan) ? $p->total_pendapatan : 0;
+                        $grand_total += $p->total_pendapatan;
                     ?>
                     <tr>
-                        <td><?= isset($p->tanggal_keluar) ? date('d/m/Y', strtotime($p->tanggal_keluar)) : '-' ?></td>
-                        <td><?= isset($p->nama_barang) ? $p->nama_barang : '-' ?></td>
-                        <td><?= isset($p->nama_jenis) ? $p->nama_jenis : '-' ?></td>
-                        <td><?= isset($p->total_terjual) ? number_format($p->total_terjual, 0, ',', '.') : 0 ?></td>
-                        <td>Rp <?= isset($p->rata_harga_jual) ? number_format($p->rata_harga_jual, 0, ',', '.') : 0 ?></td>
-                        <td>Rp <?= isset($p->total_pendapatan) ? number_format($p->total_pendapatan, 0, ',', '.') : 0 ?></td>
+                        <td><?= date('d/m/Y', strtotime($p->tanggal_keluar)) ?></td>
+                        <td><?= $p->nama_barang ?></td>
+                        <td><?= $p->nama_jenis ?></td>
+                        <td><?= $p->total_terjual ?></td>
+                        <td>Rp <?= number_format($p->rata_harga_jual, 0, ',', '.') ?></td>
+                        <td>Rp <?= number_format($p->total_pendapatan, 0, ',', '.') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -114,8 +104,8 @@ $bulan_list = [
                         <td colspan="5" class="text-end"><strong>Summary:</strong></td>
                         <td>
                             <strong>
-                                Total Barang Terjual: <?= isset($total->total_barang_terjual) ? number_format($total->total_barang_terjual, 0, ',', '.') : 0 ?><br>
-                                Jenis Barang: <?= isset($total->jumlah_jenis_barang) ? $total->jumlah_jenis_barang : 0 ?>
+                                Total Barang Terjual: <?= $total->total_barang_terjual ?><br>
+                                Jenis Barang: <?= $total->jumlah_jenis_barang ?>
                             </strong>
                         </td>
                     </tr>
@@ -139,11 +129,11 @@ $bulan_list = [
                 </div>
                 <div class="row text-center mt-3">
                     <div class="col-6">
-                        <h4><?= isset($total->total_barang_terjual) ? number_format($total->total_barang_terjual, 0, ',', '.') : 0 ?></h4>
+                        <h4><?= $total ? $total->total_barang_terjual : 0 ?></h4>
                         <p class="text-muted">Barang Terjual</p>
                     </div>
                     <div class="col-6">
-                        <h4><?= isset($total->jumlah_jenis_barang) ? $total->jumlah_jenis_barang : 0 ?></h4>
+                        <h4><?= $total ? $total->jumlah_jenis_barang : 0 ?></h4>
                         <p class="text-muted">Jenis Barang</p>
                     </div>
                 </div>
@@ -157,25 +147,23 @@ $bulan_list = [
                 <h5>Informasi Laporan</h5>
             </div>
             <div class="card-body">
-                <p><strong>Periode:</strong> <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Bulan ' . $bulan ?> <?= $tahun ?></p>
+            <p><strong>Periode:</strong> <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Bulan ' . $bulan ?> <?= $tahun ?></p>
                 <p><strong>Tanggal Cetak:</strong> <?= date('d/m/Y H:i:s') ?></p>
                 <p><strong>Status:</strong> <span class="badge bg-success">Selesai</span></p>
-                <?php if (isset($bulan_list[$bulan])): ?>
                 <a href="<?= base_url('laporan/print/'.$bulan.'/'.$tahun) ?>" class="btn btn-primary mt-2" target="_blank">
                     <i class="fas fa-print"></i> Print Laporan
                 </a>
-                <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
 
-<?php elseif (isset($penjualan) && empty($penjualan)): ?>
+<?php else: ?>
 <div class="card mt-4">
     <div class="card-body text-center">
         <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
         <h4>Data penjualan tidak ditemukan</h4>
-        <p class="text-muted">Tidak ada data penjualan untuk periode <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Bulan ' . $bulan ?> <?= $tahun ?>.</p>
+        <p class="text-muted">Tidak ada data penjualan untuk periode yang dipilih.</p>
     </div>
 </div>
 <?php endif; ?>
