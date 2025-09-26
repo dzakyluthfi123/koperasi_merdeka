@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Penjualan Bulanan - Koperasi Merdeka</title>
+    <title>Laporan Penjualan Bulanan - KOPERASI KELURAHAN MERAH PUTIH PROCOT
+    </title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -79,9 +80,10 @@
 </head>
 <body>
     <div class="header">
-        <h2>KOPERASI MERDEKA</h2>
+        <h2>KOPERASI KELURAHAN MERAH PUTIH PROCOT
+        </h2>
         <p>Laporan Penjualan Bulan <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
-        <p>Tanggal Cetak: <?= date('d/m/Y H:i:s') ?></p>
+        <p>Tanggal Cetak: <?= date('d/m/Y') ?></p>
     </div>
     
     <?php if (!empty($penjualan)): ?>
@@ -142,13 +144,15 @@
             <tr>
                 <td width="50%" class="text-center">
                     <p>Mengetahui,</p>
+                    <p>KETUA</p>
                     <br><br><br>
-                    <p><strong>Manager Koperasi</strong></p>
+                    <p><strong>KARYOTO</strong></p>
                 </td>
                 <td width="50%" class="text-center">
                     <p>Yang Membuat,</p>
+                    <p>BENDAHARA</p>
                     <br><br><br>
-                    <p><strong>Karyoto</strong></p>
+                    <p><strong>LUJI DEWI OKTINA</strong></p>
                 </td>
             </tr>
         </table>

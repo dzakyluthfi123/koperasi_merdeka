@@ -49,10 +49,9 @@
                             <a href="<?= base_url('barang/edit/'.$b->id) ?>" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <!-- Alternatif sederhana -->
-<a href="<?= base_url('barang/hapus/'.$b->id) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">
-    <i class="fas fa-trash"></i>
-</a>
+                            <a href="<?= base_url('barang/hapus/'.$b->id) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus barang?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
