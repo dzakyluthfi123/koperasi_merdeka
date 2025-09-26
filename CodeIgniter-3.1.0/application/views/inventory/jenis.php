@@ -30,9 +30,9 @@
                         <td><?= $j->deskripsi ?></td>
                         <td><?= date('d/m/Y', strtotime($j->created_at)) ?></td>
                         <td>
-                            <button class="btn btn-warning btn-sm edit-jenis" data-id="<?= $j->id ?>" data-nama="<?= $j->nama_jenis ?>" data-deskripsi="<?= $j->deskripsi ?>">
+                            <!-- <button class="btn btn-warning btn-sm edit-jenis" data-id="<?= $j->id ?>" data-nama="<?= $j->nama_jenis ?>" data-deskripsi="<?= $j->deskripsi ?>">
                                 <i class="fas fa-edit"></i>
-                            </button>
+                            </button> -->
                             <a href="<?= base_url('jenis/hapus/'.$j->id) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus jenis barang?')">
                                 <i class="fas fa-trash"></i>
                             </a>
