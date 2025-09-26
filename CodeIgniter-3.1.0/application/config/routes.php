@@ -24,4 +24,9 @@ $route['laporan'] = 'laporan/penjualan_bulanan';
 $route['laporan/print/(:num)/(:num)'] = 'laporan/print_penjualan/$1/$2';
 $route['inventory/hapus_masuk/(:num)'] = 'inventory/hapus_masuk/$1';
 
+$route['default_controller'] = 'auth/login';
+$route['login'] = 'auth/login';
+$route['register'] = 'auth/register';
+$route['dashboard'] = 'dashboard';
+$route['logout'] = 'auth/logout';
 ?>

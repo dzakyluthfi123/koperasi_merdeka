@@ -49,8 +49,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h4>Koperasi</h4>
-                        <p>Merdeka</p>
+                        <h4>KOPERASI KELURAHAN MERAH PUTIH PROCOT</h4>
                     </div>
                     <div class="align-self-center">
                         <i class="fas fa-store fa-2x"></i>
