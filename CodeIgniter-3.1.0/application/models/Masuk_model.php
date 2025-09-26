@@ -21,7 +21,9 @@ class Masuk_model extends CI_Model {
         $this->db->join('barang b', 'bm.id_barang = b.id');
         $this->db->where('bm.id', $id);
         return $this->db->get()->row();
+        return $this->db->get_where('barang_masuk', array('id' => $id))->row();
     }
+    
     
     public function insert_barang_masuk($data) {
         $this->db->insert('barang_masuk', $data);
@@ -37,5 +39,6 @@ class Masuk_model extends CI_Model {
         $this->db->where('id', $id);
         return $this->db->delete('barang_masuk');
     }
+    
 }
 ?>

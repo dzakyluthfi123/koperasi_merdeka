@@ -223,6 +223,25 @@ class Inventory extends CI_Controller {
         $this->load->view('inventory/masuk', $data);
         $this->load->view('templates/footer');
     }
+    // HAPUS BARANG MASUK
+public function hapus_masuk($id) {
+    // Ambil data barang masuk sebelum dihapus
+    $barang_masuk = $this->Masuk_model->get_masuk_by_id($id);
+    
+    if (!$barang_masuk) {
+        $this->session->set_flashdata('error', 'Data barang masuk tidak ditemukan');
+        redirect('barang-masuk');
+    }
+    
+    // Kurangi stok barang (karena barang masuk dihapus, stok harus dikurangi)
+    $this->Barang_model->update_stok($barang_masuk->id_barang, -$barang_masuk->jumlah);
+    
+    // Hapus data barang masuk
+    $this->Masuk_model->delete_barang_masuk($id);
+    
+    $this->session->set_flashdata('success', 'Data barang masuk berhasil dihapus');
+    redirect('barang-masuk');
+}
     
     // BARANG KELUAR
     public function barang_keluar() {

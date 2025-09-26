@@ -37,10 +37,11 @@
                             <th>Tanggal</th>
                             <th>Kode Transaksi</th>
                             <th>Nama Barang</th>
-                            <th>Jumlah</th>
+                            <th>Jumlah Barang</th>
                             <th>Harga Beli</th>
                             <th>Total</th>
                             <th>Supplier</th>
+                            <th>Aksi</th> <!-- Kolom baru untuk tombol hapus -->
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +55,15 @@
                             <td>Rp <?= number_format($m->harga_beli, 0, ',', '.') ?></td>
                             <td>Rp <?= number_format($m->total, 0, ',', '.') ?></td>
                             <td><?= $m->supplier ?></td>
+                            <td>
+                                <!-- Tombol Hapus -->
+                                <a href="<?= base_url('inventory/hapus_masuk/'.$m->id) ?>" 
+                                   class="btn btn-danger btn-sm" 
+                                   onclick="return confirm('Yakin hapus data barang masuk <?= $m->kode_transaksi ?>?')"
+                                   title="Hapus Barang Masuk">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -193,5 +203,31 @@
                 return false;
             }
         });
+
+        // SweetAlert untuk konfirmasi hapus
+        $('a[onclick*="confirm"]').click(function(e) {
+            e.preventDefault();
+            var href = $(this).attr('href');
+            var kodeTransaksi = $(this).closest('tr').find('td:eq(2)').text().trim();
+            
+            Swal.fire({
+                title: 'Hapus Barang Masuk?',
+                html: `Yakin ingin menghapus data barang masuk dengan kode <strong>"${kodeTransaksi}"</strong>?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = href;
+                }
+            });
+        });
     });
 </script>
+
+<!-- Include SweetAlert untuk konfirmasi yang lebih baik -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

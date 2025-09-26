@@ -22,5 +22,6 @@ $route['barang-keluar'] = 'inventory/barang_keluar';
 
 $route['laporan'] = 'laporan/penjualan_bulanan';
 $route['laporan/print/(:num)/(:num)'] = 'laporan/print_penjualan/$1/$2';
+$route['inventory/hapus_masuk/(:num)'] = 'inventory/hapus_masuk/$1';
 
 ?>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Penjualan Bulanan - KOPERASI KELURAHAN MERAH PUTIH PROCOT
+    <title>JL. Rambutan RT 04 RW 01 Kelurahan Procot
     </title>
     <style>
         body { 
@@ -9,6 +9,7 @@
             margin: 20px; 
             font-size: 14px;
         }
+        
         .header { 
             text-align: center; 
             margin-bottom: 30px;
