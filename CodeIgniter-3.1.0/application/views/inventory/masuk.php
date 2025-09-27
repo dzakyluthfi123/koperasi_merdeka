@@ -56,14 +56,13 @@
                             <td>Rp <?= number_format($m->total, 0, ',', '.') ?></td>
                             <td><?= $m->supplier ?></td>
                             <td>
-                                <!-- Tombol Hapus -->
-                                <a href="<?= base_url('inventory/hapus_masuk/'.$m->id) ?>" 
-                                   class="btn btn-danger btn-sm" 
-                                   onclick="return confirm('Yakin hapus data barang masuk <?= $m->kode_transaksi ?>?')"
-                                   title="Hapus Barang Masuk">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
+    <a href="<?= base_url('barang-masuk/hapus/'.$m->id) ?>" 
+       class="btn btn-danger btn-sm btn-hapus" 
+       data-kode="<?= $m->kode_transaksi ?>"
+       title="Hapus Barang Masuk">
+        <i class="fas fa-trash"></i>
+    </a>
+</td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

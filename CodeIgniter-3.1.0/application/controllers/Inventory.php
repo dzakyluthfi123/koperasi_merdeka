@@ -217,5 +217,24 @@ public function barang_masuk() {
         $this->load->view('inventory/keluar', $data);
         $this->load->view('templates/footer');
     }
+    // BARANG MASUK - HAPUS
+public function hapus_masuk($id) {
+    // Cek apakah data barang masuk ada
+    $barang_masuk = $this->Masuk_model->get_masuk_by_id($id);
+    
+    if (!$barang_masuk) {
+        $this->session->set_flashdata('error', 'Data barang masuk tidak ditemukan');
+        redirect('barang-masuk');
+    }
+    
+    // Kurangi stok barang terlebih dahulu
+    $this->Barang_model->update_stok($barang_masuk->id_barang, -$barang_masuk->jumlah);
+    
+    // Hapus data barang masuk
+    $this->Masuk_model->delete_masuk($id);
+    
+    $this->session->set_flashdata('success', 'Data barang masuk berhasil dihapus');
+    redirect('barang-masuk');
+}
 }
 ?>

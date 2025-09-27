@@ -39,6 +39,11 @@ class Masuk_model extends CI_Model {
         $this->db->where('id', $id);
         return $this->db->delete('barang_masuk');
     }
+
+    
+    public function delete_masuk($id) {
+        return $this->db->delete('barang_masuk', ['id' => $id]);
+    }
     
 }
 ?>
