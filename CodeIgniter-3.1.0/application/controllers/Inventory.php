@@ -35,7 +35,7 @@ class Inventory extends CI_Controller {
     
     // MANAJEMEN JENIS BARANG
     public function jenis_barang() {
-        if ($_POST) {
+        if ($this->input->post()) {
             $data = array(
                 'nama_jenis' => $this->input->post('nama_jenis'),
                 'deskripsi' => $this->input->post('deskripsi')
@@ -54,7 +54,7 @@ class Inventory extends CI_Controller {
     }
     
     public function update_jenis() {
-        if ($_POST) {
+        if ($this->input->post()) {
             $id = $this->input->post('id');
             $data = array(
                 'nama_jenis' => $this->input->post('nama_jenis'),
@@ -68,8 +68,25 @@ class Inventory extends CI_Controller {
     }
     
     public function hapus_jenis($id) {
-        $this->Jenis_model->delete_jenis($id);
-        $this->session->set_flashdata('success', 'Jenis barang berhasil dihapus');
+        // Cek apakah jenis barang masih digunakan
+        $barang_terkait = $this->Barang_model->get_barang_by_jenis($id);
+        
+        if (!empty($barang_terkait)) {
+            // Jika masih digunakan, set id_jenis menjadi NULL untuk barang terkait
+            foreach($barang_terkait as $barang) {
+                $this->Barang_model->update_barang($barang->id, array('id_jenis' => NULL));
+            }
+        }
+        
+        // Hapus jenis barang
+        $result = $this->Jenis_model->delete_jenis($id);
+        
+        if ($result) {
+            $this->session->set_flashdata('success', 'Jenis barang berhasil dihapus');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal menghapus jenis barang');
+        }
+        
         redirect('jenis-barang');
     }
     
@@ -85,7 +102,7 @@ class Inventory extends CI_Controller {
     }
     
     public function tambah_barang() {
-        if ($_POST) {
+        if ($this->input->post()) {
             $data = array(
                 'kode_barang' => $this->input->post('kode_barang'),
                 'nama_barang' => $this->input->post('nama_barang'),
@@ -110,7 +127,7 @@ class Inventory extends CI_Controller {
     }
     
     public function edit_barang($id) {
-        if ($_POST) {
+        if ($this->input->post()) {
             $data = array(
                 'kode_barang' => $this->input->post('kode_barang'),
                 'nama_barang' => $this->input->post('nama_barang'),
@@ -141,73 +158,133 @@ class Inventory extends CI_Controller {
         redirect('barang');
     }
     
-    // BARANG MASUK
-    // Tambahkan method ini di Controller Inventory
-public function barang_masuk() {
-    // Load data yang diperlukan
-    $data['barang'] = $this->Barang_model->get_all_barang();
-    $data['masuk'] = $this->Masuk_model->get_all_masuk();
-    $data['title'] = 'Barang Masuk';
+    // BARANG MASUK - VERSI FIXED
+    public function barang_masuk() {
+        // Load data yang diperlukan
+        $data['barang'] = $this->Barang_model->get_all_barang();
+        $data['masuk'] = $this->Masuk_model->get_all_masuk();
+        $data['title'] = 'Barang Masuk';
 
-    if ($this->input->post()) {
-        $this->form_validation->set_rules('id_barang', 'Barang', 'required');
-        $this->form_validation->set_rules('jumlah', 'Jumlah', 'required|numeric');
-        $this->form_validation->set_rules('harga_beli', 'Harga Beli', 'required|numeric');
-        $this->form_validation->set_rules('supplier', 'Supplier', 'required');
-
-        if ($this->form_validation->run() == TRUE) {
-            $data_masuk = array(
-                'id_barang' => $this->input->post('id_barang'),
-                'kode_transaksi' => 'BM-' . date('YmdHis'),
-                'jumlah' => $this->input->post('jumlah'),
-                'harga_beli' => $this->input->post('harga_beli'),
-                'total' => $this->input->post('jumlah') * $this->input->post('harga_beli'),
-                'tanggal_masuk' => $this->input->post('tanggal_masuk'),
-                'hari_masuk' => date('l', strtotime($this->input->post('tanggal_masuk'))),
-                'supplier' => $this->input->post('supplier')
-            );
-
-            // Simpan data barang masuk
-            $this->Masuk_model->insert_barang_masuk($data_masuk);
+        if ($this->input->post()) {
+            // Validasi manual tanpa form_validation library
+            $id_barang = $this->input->post('id_barang');
+            $jumlah = $this->input->post('jumlah');
+            $harga_beli = $this->input->post('harga_beli');
+            $supplier = $this->input->post('supplier');
+            $tanggal_masuk = $this->input->post('tanggal_masuk');
             
-            // Update stok barang
-            $this->Barang_model->update_stok($data_masuk['id_barang'], $data_masuk['jumlah']);
-
-            $this->session->set_flashdata('success', 'Barang masuk berhasil dicatat');
-            redirect('barang-masuk');
-        }
-    }
-
-    $this->load->view('templates/header', $data);
-    $this->load->view('inventory/masuk', $data);
-    $this->load->view('templates/footer');
-}
-    
-    // BARANG KELUAR
-    public function barang_keluar() {
-        if ($_POST) {
-            // Cek stok tersedia
-            $barang = $this->Barang_model->get_barang_by_id($this->input->post('id_barang'));
-            if ($barang->stok < $this->input->post('jumlah')) {
-                $this->session->set_flashdata('error', 'Stok tidak mencukupi! Stok tersedia: ' . $barang->stok);
-                redirect('barang-keluar');
+            // Validasi input
+            $errors = array();
+            
+            if (empty($id_barang)) {
+                $errors[] = 'Barang harus dipilih';
             }
             
-            $data = array(
-                'id_barang' => $this->input->post('id_barang'),
-                'kode_transaksi' => 'BK-' . date('YmdHis'),
-                'jumlah' => $this->input->post('jumlah'),
-                'harga_jual' => $this->input->post('harga_jual'),
-                'total' => $this->input->post('jumlah') * $this->input->post('harga_jual'),
-                'tanggal_keluar' => $this->input->post('tanggal_keluar'),
-                'hari_keluar' => date('l', strtotime($this->input->post('tanggal_keluar'))),
-                'keterangan' => $this->input->post('keterangan')
-            );
+            if (empty($jumlah) || $jumlah <= 0) {
+                $errors[] = 'Jumlah harus lebih dari 0';
+            }
             
-            $this->Keluar_model->insert_barang_keluar($data);
-            $this->Barang_model->update_stok($data['id_barang'], -$data['jumlah']);
-            $this->session->set_flashdata('success', 'Barang keluar berhasil dicatat');
-            redirect('barang-keluar');
+            if (empty($harga_beli) || $harga_beli <= 0) {
+                $errors[] = 'Harga beli harus lebih dari 0';
+            }
+            
+            if (empty($supplier)) {
+                $errors[] = 'Supplier harus diisi';
+            }
+            
+            if (empty($tanggal_masuk)) {
+                $errors[] = 'Tanggal masuk harus diisi';
+            }
+            
+            // Jika tidak ada error, proses data
+            if (empty($errors)) {
+                $data_masuk = array(
+                    'id_barang' => $id_barang,
+                    'kode_transaksi' => 'BM-' . date('YmdHis'),
+                    'jumlah' => $jumlah,
+                    'harga_beli' => $harga_beli,
+                    'total' => $jumlah * $harga_beli,
+                    'tanggal_masuk' => $tanggal_masuk,
+                    'hari_masuk' => date('l', strtotime($tanggal_masuk)),
+                    'supplier' => $supplier
+                );
+
+                // Simpan data barang masuk
+                $this->Masuk_model->insert_barang_masuk($data_masuk);
+                
+                // Update stok barang
+                $this->Barang_model->update_stok($data_masuk['id_barang'], $data_masuk['jumlah']);
+
+                $this->session->set_flashdata('success', 'Barang masuk berhasil dicatat');
+                redirect('barang-masuk');
+            } else {
+                // Tampilkan error
+                $this->session->set_flashdata('error', implode('<br>', $errors));
+            }
+        }
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('inventory/masuk', $data);
+        $this->load->view('templates/footer');
+    }
+    
+    // BARANG KELUAR - VERSI FIXED
+    public function barang_keluar() {
+        if ($this->input->post()) {
+            // Validasi manual
+            $id_barang = $this->input->post('id_barang');
+            $jumlah = $this->input->post('jumlah');
+            $harga_jual = $this->input->post('harga_jual');
+            $keterangan = $this->input->post('keterangan');
+            $tanggal_keluar = $this->input->post('tanggal_keluar');
+            
+            // Validasi input
+            $errors = array();
+            
+            if (empty($id_barang)) {
+                $errors[] = 'Barang harus dipilih';
+            }
+            
+            if (empty($jumlah) || $jumlah <= 0) {
+                $errors[] = 'Jumlah harus lebih dari 0';
+            }
+            
+            if (empty($harga_jual) || $harga_jual <= 0) {
+                $errors[] = 'Harga jual harus lebih dari 0';
+            }
+            
+            if (empty($tanggal_keluar)) {
+                $errors[] = 'Tanggal keluar harus diisi';
+            }
+            
+            // Cek stok tersedia
+            if (empty($errors)) {
+                $barang = $this->Barang_model->get_barang_by_id($id_barang);
+                if ($barang->stok < $jumlah) {
+                    $errors[] = 'Stok tidak mencukupi! Stok tersedia: ' . $barang->stok;
+                }
+            }
+            
+            // Jika tidak ada error, proses data
+            if (empty($errors)) {
+                $data = array(
+                    'id_barang' => $id_barang,
+                    'kode_transaksi' => 'BK-' . date('YmdHis'),
+                    'jumlah' => $jumlah,
+                    'harga_jual' => $harga_jual,
+                    'total' => $jumlah * $harga_jual,
+                    'tanggal_keluar' => $tanggal_keluar,
+                    'hari_keluar' => date('l', strtotime($tanggal_keluar)),
+                    'keterangan' => $keterangan
+                );
+                
+                $this->Keluar_model->insert_barang_keluar($data);
+                $this->Barang_model->update_stok($data['id_barang'], -$data['jumlah']);
+                $this->session->set_flashdata('success', 'Barang keluar berhasil dicatat');
+                redirect('barang-keluar');
+            } else {
+                $this->session->set_flashdata('error', implode('<br>', $errors));
+            }
         }
         
         $data['title'] = 'Barang Keluar';
