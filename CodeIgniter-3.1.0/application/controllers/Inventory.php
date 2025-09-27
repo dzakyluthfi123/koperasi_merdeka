@@ -5,13 +5,13 @@ class Inventory extends CI_Controller {
     
     public function __construct() {
         parent::__construct();
-        // Load models yang diperlukan
+        
         $this->load->model('Barang_model');
         $this->load->model('Jenis_model');
         $this->load->model('Masuk_model');
         $this->load->model('Keluar_model');
         
-        // Load helper dan library
+        
         $this->load->helper('url');
         $this->load->library('session');
     }
@@ -20,8 +20,7 @@ class Inventory extends CI_Controller {
         $data['title'] = 'Dashboard Inventory';
         $data['barang'] = $this->Barang_model->get_all_barang();
         $data['total_barang'] = count($data['barang']);
-        
-        // Hitung total stok
+
         $total_stok = 0;
         foreach($data['barang'] as $b) {
             $total_stok += $b->stok;
@@ -33,7 +32,7 @@ class Inventory extends CI_Controller {
         $this->load->view('templates/footer');
     }
     
-    // MANAJEMEN JENIS BARANG
+    
     public function jenis_barang() {
         if ($_POST) {
             $data = array(
@@ -73,7 +72,7 @@ class Inventory extends CI_Controller {
         redirect('jenis-barang');
     }
     
-    // MANAJEMEN BARANG
+   
     public function barang() {
         $data['title'] = 'Data Barang';
         $data['barang'] = $this->Barang_model->get_all_barang();
@@ -142,9 +141,9 @@ class Inventory extends CI_Controller {
     }
     
     // BARANG MASUK
-    // Tambahkan method ini di Controller Inventory
+    
 public function barang_masuk() {
-    // Load data yang diperlukan
+    
     $data['barang'] = $this->Barang_model->get_all_barang();
     $data['masuk'] = $this->Masuk_model->get_all_masuk();
     $data['title'] = 'Barang Masuk';
@@ -167,10 +166,10 @@ public function barang_masuk() {
                 'supplier' => $this->input->post('supplier')
             );
 
-            // Simpan data barang masuk
+            
             $this->Masuk_model->insert_barang_masuk($data_masuk);
             
-            // Update stok barang
+            
             $this->Barang_model->update_stok($data_masuk['id_barang'], $data_masuk['jumlah']);
 
             $this->session->set_flashdata('success', 'Barang masuk berhasil dicatat');
@@ -186,7 +185,7 @@ public function barang_masuk() {
     // BARANG KELUAR
     public function barang_keluar() {
         if ($_POST) {
-            // Cek stok tersedia
+            
             $barang = $this->Barang_model->get_barang_by_id($this->input->post('id_barang'));
             if ($barang->stok < $this->input->post('jumlah')) {
                 $this->session->set_flashdata('error', 'Stok tidak mencukupi! Stok tersedia: ' . $barang->stok);
@@ -219,7 +218,7 @@ public function barang_masuk() {
     }
     // BARANG MASUK - HAPUS
 public function hapus_masuk($id) {
-    // Cek apakah data barang masuk ada
+    
     $barang_masuk = $this->Masuk_model->get_masuk_by_id($id);
     
     if (!$barang_masuk) {
@@ -227,10 +226,10 @@ public function hapus_masuk($id) {
         redirect('barang-masuk');
     }
     
-    // Kurangi stok barang terlebih dahulu
+    
     $this->Barang_model->update_stok($barang_masuk->id_barang, -$barang_masuk->jumlah);
     
-    // Hapus data barang masuk
+    
     $this->Masuk_model->delete_masuk($id);
     
     $this->session->set_flashdata('success', 'Data barang masuk berhasil dihapus');
