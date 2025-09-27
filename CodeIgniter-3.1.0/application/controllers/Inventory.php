@@ -14,6 +14,7 @@ class Inventory extends CI_Controller {
         
         $this->load->helper('url');
         $this->load->library('session');
+        $this->load->library('form_validation');
     }
     
     public function index() {
