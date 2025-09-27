@@ -74,7 +74,7 @@
                         <th>Nama Barang</th>
                         <th>Jenis</th>
                         <th>Jumlah Terjual</th>
-                        <th>Harga Rata-rata</th>
+                        <th>Harga Jual</th>
                         <th>Total Pendapatan</th>
                     </tr>
                 </thead>
