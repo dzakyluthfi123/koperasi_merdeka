@@ -75,7 +75,7 @@
                         <th>Jenis</th>
                         <th>Jumlah Terjual</th>
                         <th>Harga Jual</th>
-                        <th>Total Pendapatan</th>
+                        <th>Total Pembayaran</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -147,7 +147,7 @@
                 <h5>Informasi Laporan</h5>
             </div>
             <div class="card-body">
-            <p><strong>Periode:</strong> <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Bulan ' . $bulan ?> <?= $tahun ?></p>
+            <p>Periode: <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
                 <p><strong>Tanggal Cetak:</strong> <?= date('d/m/Y H:i:s') ?></p>
                 <p><strong>Status:</strong> <span class="badge bg-success">Selesai</span></p>
                 <a href="<?= base_url('laporan/print/'.$bulan.'/'.$tahun) ?>" class="btn btn-primary mt-2" target="_blank">

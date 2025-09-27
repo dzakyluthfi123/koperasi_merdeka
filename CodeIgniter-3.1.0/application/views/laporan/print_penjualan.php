@@ -61,7 +61,7 @@
 <body onload="window.print()">
     <div class="header">
         <h1>LAPORAN PENJUALAN BULANAN</h1>
-        <h2>Periode: <?= $nama_bulan ?> <?= $tahun ?></h2>
+        <p>Periode: <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
         <p>Dicetak pada: <?= date('d/m/Y H:i:s') ?></p>
     </div>
 
@@ -81,7 +81,7 @@
                     <th>Jenis</th>
                     <th>Jumlah Terjual</th>
                     <th>Harga Rata-rata</th>
-                    <th>Total Pendapatan</th>
+                    <th>Total Penjualan</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,10 +106,10 @@
 
         <div class="summary">
             <h3>Ringkasan Laporan</h3>
-            <p><strong>Total Pendapatan:</strong> Rp <?= number_format($grand_total, 0, ',', '.') ?></p>
+            <p><strong>Total Pembayaran:</strong> Rp <?= number_format($grand_total, 0, ',', '.') ?></p>
             <p><strong>Total Barang Terjual:</strong> <?= number_format($total->total_barang_terjual, 0, ',', '.') ?> unit</p>
             <p><strong>Jenis Barang Terjual:</strong> <?= $total->jumlah_jenis_barang ?> jenis</p>
-            <p><strong>Periode Laporan:</strong> <?= $nama_bulan ?> <?= $tahun ?></p>
+            <p><b>Periode:</b> <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
         </div>
     <?php else: ?>
         <div style="text-align: center; padding: 40px;">

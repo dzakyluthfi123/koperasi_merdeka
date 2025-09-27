@@ -109,11 +109,13 @@
             <tr>
                 <td width="50%" class="text-center">
                     <p>Mengetahui,</p>
+                    <p>KETUA</p>
                     <br><br><br>
-                    <p><strong>Manager Koperasi</strong></p>
+                    <p><strong><b>KARYOTO</b></strong></p>
                 </td>
                 <td width="50%" class="text-center">
                     <p>Yang Membuat,</p>
+                    <p>BENDAHARA</p>
                     <br><br><br>
                     <p><strong>Administrator</strong></p>
                 </td>
