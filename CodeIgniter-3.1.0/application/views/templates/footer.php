@@ -8,7 +8,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     
     <script>
-        // Auto close alert setelah 5 detik
+        
         setTimeout(function() {
             var alerts = document.querySelectorAll('.alert');
             alerts.forEach(function(alert) {
@@ -17,7 +17,7 @@
             });
         }, 5000);
 
-        // Inisialisasi DataTable
+        
         $(document).ready(function() {
             $('.table').DataTable();
         });

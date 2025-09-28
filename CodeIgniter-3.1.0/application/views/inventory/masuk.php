@@ -41,7 +41,7 @@
                             <th>Harga Beli</th>
                             <th>Total</th>
                             <th>Supplier</th>
-                            <th>Aksi</th> <!-- Kolom baru untuk tombol hapus -->
+                            <th>Aksi</th> 
                         </tr>
                     </thead>
                     <tbody>

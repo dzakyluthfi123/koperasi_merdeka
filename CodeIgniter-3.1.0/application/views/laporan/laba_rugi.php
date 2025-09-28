@@ -29,7 +29,7 @@
                                 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
                             ];
                             
-                            // Set bulan default ke bulan saat ini jika tidak ada filter
+                            
                             $bulan_selected = isset($bulan) ? $bulan : date('m');
                             $tahun_selected = isset($tahun) ? $tahun : date('Y');
                             
@@ -90,17 +90,17 @@
 </div>
 
 <?php 
-// Inisialisasi variabel total sebelum digunakan
+
 $total_penjualan = 0;
 $total_harga_beli = 0;
 $total_laba_rugi = 0;
 $total_barang_terjual = 0;
 $jumlah_jenis_barang = 0;
 
-// Hitung total jika data ada
+
 if (isset($laba_rugi) && !empty($laba_rugi)) {
     foreach($laba_rugi as $lr) {
-        // Validasi dan default values untuk setiap property
+        
         $harga_beli = isset($lr->harga_beli) ? $lr->harga_beli : 0;
         $harga_jual = isset($lr->harga_jual) ? $lr->harga_jual : 0;
         $jumlah = isset($lr->jumlah) ? $lr->jumlah : 0;
@@ -113,7 +113,7 @@ if (isset($laba_rugi) && !empty($laba_rugi)) {
         $total_laba_rugi += $laba_rugi_item;
     }
     
-    // Hitung total barang terjual dan jenis barang
+    
     $total_barang_terjual = 0;
     $jenis_barang_unik = [];
     
@@ -132,7 +132,7 @@ if (isset($laba_rugi) && !empty($laba_rugi)) {
 ?>
 
 <?php if (isset($laba_rugi) && !empty($laba_rugi)): ?>
-<!-- Ringkasan Statistik -->
+
 <div class="row mt-4">
     <div class="col-md-3">
         <div class="card bg-primary text-white">
@@ -199,7 +199,7 @@ if (isset($laba_rugi) && !empty($laba_rugi)) {
     </div>
 </div>
 
-<!-- Data Laba Rugi Detail -->
+
 <div class="card mt-4">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5>Data Laba Rugi Bulan <?= $bulan_list[$bulan_selected] ?> <?= $tahun_selected ?></h5>
@@ -228,13 +228,13 @@ if (isset($laba_rugi) && !empty($laba_rugi)) {
                 <tbody>
                     <?php 
                     $no = 1;
-                    // Reset variabel untuk perhitungan ulang (untuk memastikan)
+                    
                     $table_total_penjualan = 0;
                     $table_total_hpp = 0;
                     $table_total_laba = 0;
                     
                     foreach($laba_rugi as $lr): 
-                        // Validasi semua property dengan nilai default
+                        
                         $kode_transaksi = isset($lr->kode_transaksi) ? $lr->kode_transaksi : 'TRX-' . $no;
                         $nama_barang = isset($lr->nama_barang) ? $lr->nama_barang : 'Barang Tidak Diketahui';
                         $nama_jenis = isset($lr->nama_jenis) ? $lr->nama_jenis : 'Tidak Diketahui';
@@ -243,7 +243,7 @@ if (isset($laba_rugi) && !empty($laba_rugi)) {
                         $harga_jual = isset($lr->harga_jual) ? $lr->harga_jual : 0;
                         $tanggal_keluar = isset($lr->tanggal_keluar) ? $lr->tanggal_keluar : date('Y-m-d');
                         
-                        // Hitung nilai jika tidak ada di object
+                        
                         $total_penjualan_item = isset($lr->total_penjualan) ? $lr->total_penjualan : ($harga_jual * $jumlah);
                         $total_hpp_item = isset($lr->total_harga_beli) ? $lr->total_harga_beli : ($harga_beli * $jumlah);
                         $laba_rugi_item = isset($lr->laba_rugi) ? $lr->laba_rugi : ($total_penjualan_item - $total_hpp_item);
@@ -419,7 +419,7 @@ if (isset($laba_rugi) && !empty($laba_rugi)) {
 <!-- JavaScript untuk meningkatkan UX -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Auto-submit form saat filter berubah
+    
     const bulanSelect = document.querySelector('select[name="bulan"]');
     const tahunSelect = document.querySelector('select[name="tahun"]');
     const jenisSelect = document.querySelector('select[name="jenis_barang"]');
@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Validasi form sebelum submit
+
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
         if (!bulanSelect.value || !tahunSelect.value) {

@@ -3,18 +3,18 @@
 <head>
     <title>Laporan Laba Rugi</title>
     <?php
-    // Definisikan array bulan untuk konsistensi
+    
     $bulan_list = [
         1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
         5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
         9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
     ];
     
-    // Ambil nama bulan dari parameter atau gunakan bulan saat ini
+    
     $nama_bulan = isset($bulan) && isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Semua Bulan';
     $tahun = isset($tahun) ? $tahun : date('Y');
     
-    // Jika tidak ada data bulan spesifik, tampilkan informasi yang sesuai
+    
     if (!isset($bulan) || empty($bulan)) {
         $periode_text = "Tahun $tahun";
     } else {
