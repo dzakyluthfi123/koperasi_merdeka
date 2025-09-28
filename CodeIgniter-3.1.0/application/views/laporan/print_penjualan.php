@@ -3,7 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?> - <?= $nama_bulan ?> <?= $tahun ?></title>
+    <title><?= $title ?></title>
+    <?php
+    // Definisikan array bulan untuk konsistensi
+    $bulan_list = [
+        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+    ];
+    
+    // Ambil nama bulan dari parameter atau gunakan bulan saat ini
+    $nama_bulan = isset($bulan) && isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Semua Bulan';
+    $tahun = isset($tahun) ? $tahun : date('Y');
+    
+    // Jika tidak ada data bulan spesifik, tampilkan informasi yang sesuai
+    if (!isset($bulan) || empty($bulan)) {
+        $periode_text = "Tahun $tahun";
+    } else {
+        $periode_text = "$nama_bulan $tahun";
+    }
+    ?>
     <style>
         @page {
             size: A4 landscape;
@@ -60,9 +79,10 @@
 </head>
 <body onload="window.print()">
     <div class="header">
-        <h1>LAPORAN PENJUALAN BULANAN</h1>
-        <p>Periode: <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
-        <p>Dicetak pada: <?= date('d/m/Y H:i:s') ?></p>
+        <h1>KOPERASI KELURAHAN MERAH PUTIH PROCOT</h1>
+        <h3>LAPORAN PENJUALAN</h3>
+        <h3>Periode: <?= $periode_text ?></h3>
+        <p>Dicetak pada: <?= date('d/m/Y') ?></p>
     </div>
 
     <?php if (!empty($penjualan)): ?>
@@ -72,7 +92,14 @@
             $grand_total += $p->total_pendapatan;
         }
         ?>
-        
+         <div class="summary">
+            <h3>Ringkasan Laporan Penjualan Koperasi :</h3>
+            <p><strong>Total Pembayaran:</strong> Rp <?= number_format($grand_total, 0, ',', '.') ?></p>
+            <p><strong>Total Barang Terjual:</strong> <?= number_format($total->total_barang_terjual, 0, ',', '.') ?> unit</p>
+            <p><strong>Jenis Barang Terjual:</strong> <?= $total->jumlah_jenis_barang ?> jenis</p>
+            
+        </div>
+        <br>
         <table class="table">
             <thead>
                 <tr>
@@ -80,7 +107,7 @@
                     <th>Nama Barang</th>
                     <th>Jenis</th>
                     <th>Jumlah Terjual</th>
-                    <th>Harga Rata-rata</th>
+                    <th>Harga Jual</th>
                     <th>Total Penjualan</th>
                 </tr>
             </thead>
@@ -104,13 +131,8 @@
             </tfoot>
         </table>
 
-        <div class="summary">
-            <h3>Ringkasan Laporan</h3>
-            <p><strong>Total Pembayaran:</strong> Rp <?= number_format($grand_total, 0, ',', '.') ?></p>
-            <p><strong>Total Barang Terjual:</strong> <?= number_format($total->total_barang_terjual, 0, ',', '.') ?> unit</p>
-            <p><strong>Jenis Barang Terjual:</strong> <?= $total->jumlah_jenis_barang ?> jenis</p>
-            <p><b>Periode:</b> <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
-        </div>
+       
+        
     <?php else: ?>
         <div style="text-align: center; padding: 40px;">
             <h3>Data penjualan tidak ditemukan</h3>

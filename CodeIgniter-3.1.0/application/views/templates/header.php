@@ -68,7 +68,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link <?= uri_string() == 'laporan' ? 'active' : '' ?>" href="<?= base_url('laporan') ?>">
-                    <i class="fas fa-chart-bar"></i> Laporan
+                    <i class="fas fa-chart-bar"></i> Laporan Penjualan
                 </a>
             </li>
             <li class="nav-item">

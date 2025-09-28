@@ -147,8 +147,8 @@
                 <h5>Informasi Laporan</h5>
             </div>
             <div class="card-body">
-            <p>Periode: <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
-                <p><strong>Tanggal Cetak:</strong> <?= date('d/m/Y H:i:s') ?></p>
+            <p><b>Periode:</b> <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
+                <p><strong>Tanggal Cetak:</strong> <?= date('d/m/Y') ?></p>
                 <p><strong>Status:</strong> <span class="badge bg-success">Selesai</span></p>
                 <a href="<?= base_url('laporan/print/'.$bulan.'/'.$tahun) ?>" class="btn btn-primary mt-2" target="_blank">
                     <i class="fas fa-print"></i> Print Laporan

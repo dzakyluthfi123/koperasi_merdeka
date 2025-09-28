@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Laba Rugi - Koperasi Merah Putih Procot</title>
+    <title>Laporan Laba Rugi</title>
+    <?php
+    // Definisikan array bulan untuk konsistensi
+    $bulan_list = [
+        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+    ];
+    
+    // Ambil nama bulan dari parameter atau gunakan bulan saat ini
+    $nama_bulan = isset($bulan) && isset($bulan_list[$bulan]) ? $bulan_list[$bulan] : 'Semua Bulan';
+    $tahun = isset($tahun) ? $tahun : date('Y');
+    
+    // Jika tidak ada data bulan spesifik, tampilkan informasi yang sesuai
+    if (!isset($bulan) || empty($bulan)) {
+        $periode_text = "Tahun $tahun";
+    } else {
+        $periode_text = "$nama_bulan $tahun";
+    }
+    ?>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; font-size: 12px; }
         .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
@@ -24,8 +43,8 @@
     <div class="header">
         <h2>KOPERASI KELURAHAN MERAH PUTIH PROCOT</h2>
         <h3>LAPORAN LABA RUGI</h3>
-        <p>Periode: <?= isset($bulan_list[$bulan]) ? $bulan_list[$bulan] . ' ' . $tahun : 'Bulan ' . $bulan . ' ' . $tahun ?></p>
-        <p>Tanggal Cetak: <?= date('d/m/Y H:i:s') ?></p>
+        <h3>Periode: <?= $periode_text ?></h3>
+        <h4>Tanggal Cetak: <?= date('d/m/Y') ?></h4>
     </div>
     
     <?php if (!empty($laba_rugi)): 
@@ -41,6 +60,7 @@
     ?>
     
     <div class="summary">
+    <h3>Ringkasan Laporan Laba/Rugi Koperasi :</h3>
         <p><strong>Total Penjualan:</strong> Rp <?= number_format($total_penjualan, 0, ',', '.') ?></p>
         <p><strong>Total Harga Beli:</strong> Rp <?= number_format($total_harga_beli, 0, ',', '.') ?></p>
         <p><strong>Total <?= $total_laba_rugi >= 0 ? 'Laba' : 'Rugi' ?>:</strong> 
@@ -117,7 +137,7 @@
                     <p>Yang Membuat,</p>
                     <p>BENDAHARA</p>
                     <br><br><br>
-                    <p><strong>Administrator</strong></p>
+                    <p><strong>LUJI DEWI OKTINA</strong></p>
                 </td>
             </tr>
         </table>
