@@ -137,7 +137,7 @@
                     <p>Yang Membuat,</p>
                     <p>BENDAHARA</p>
                     <br><br><br>
-                    <p><strong>LUJI DEWI OKTINA</strong></p>
+                    <p><strong><b>LUJI DEWI OKTINA</b></strong></p>
                 </td>
             </tr>
         </table>
@@ -145,7 +145,9 @@
     
     <div class="no-print" style="margin-top: 20px; text-align: center;">
         <button onclick="window.print()" class="btn btn-primary">Print Laporan</button>
-        <button onclick="window.history.back()" class="btn btn-secondary">Kembali</button>
+        <button onclick="window.location.href='<?php echo site_url('laporan/laba_rugi'); ?>'" class="btn btn-secondary">
+    Kembali
+</button>
     </div>
 </body>
 </html>

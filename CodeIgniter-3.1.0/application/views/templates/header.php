@@ -42,7 +42,7 @@
         
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link <?= uri_string() == '' ? 'active' : '' ?>" href="<?= base_url() ?>">
+                <a class="nav-link <?= uri_string() == '' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">
                     <i class="fas fa-home"></i> Dashboard
                 </a>
             </li>
@@ -76,6 +76,11 @@
         <i class="fas fa-chart-line"></i> Laporan Laba Rugi
     </a>
 </li>
+            <!-- <li class="nav-item">
+    <a class="nav-link <?= uri_string() == 'login_view' ? 'active' : '' ?>" href="<?= base_url('login_view') ?>">
+        <i class="fas fa-chart-line"></i> Logout
+    </a>
+</li> -->
         </ul>
     </div>
 </nav>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['default_controller'] = 'inventory';
+$route['default_controller'] = 'auth/login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
@@ -46,8 +46,10 @@ $route['barang/tambah'] = 'inventory/tambah_barang';
 $route['barang/edit/(:num)'] = 'inventory/edit_barang/$1';
 $route['barang/hapus/(:num)'] = 'inventory/hapus_barang/$1';
 
-// Default route
-$route['default_controller'] = 'inventory';
-$route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+
+// Authentication Routes
+$route['auth'] = 'auth';
+$route['auth/login'] = 'auth/login';
+$route['auth/logout'] = 'auth/logout';
+$route['inventory'] = 'dashboard';
 ?>
